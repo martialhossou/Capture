@@ -3,173 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Capture de Site Web - Outil Simple</title>
+    <title>Affichage d'un Lien dans un Cadre Défilant</title>
     <style>
+        /* Style pour centrer et donner une taille au conteneur */
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f9;
-            color: #333;
             text-align: center;
+            padding: 20px;
         }
-        .container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 30px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+        /* Style pour l'iframe (le rectangle défilant) */
+        .iframe-container {
+            /* Définit une taille visible pour l'iframe */
+            width: 800px;
+            height: 500px;
+            margin: 20px auto; /* Centre le conteneur */
+            border: 2px solid #007bff; /* Ajoute une bordure pour simuler le rectangle/canvas */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        h1 {
-            color: #007bff;
-            margin-bottom: 20px;
-        }
-        input[type="url"] {
-            width: calc(100% - 22px);
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-        button {
-            background-color: #28a745;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-        #result-area {
-            margin-top: 30px;
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-            text-align: left;
-        }
-        #screenshot-image {
-            max-width: 100%;
-            height: auto;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-top: 15px;
-            display: block;
-        }
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #007bff;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-            display: none;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .info {
-            font-size: 0.8em;
-            color: #6c757d;
-            margin-top: 20px;
-            padding: 10px;
-            border-left: 3px solid #ffc107;
-            background-color: #fff3cd;
+
+        /* L'iframe elle-même */
+        #page-externe {
+            width: 100%;
+            height: 100%;
+            border: none; /* Enlève la bordure par défaut de l'iframe */
+            /* Par défaut, les iframes sont défilables si le contenu dépasse leur taille */
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>📸 Générateur de Capture d'Écran Web</h1>
-        
-        <p>Entrez l'URL du site web dont vous voulez la capture :</p>
-        
-        <input type="url" id="url-input" placeholder="Ex: https://www.google.com" required>
-        
-        <button onclick="generateScreenshot()">Générer la Capture</button>
-        
-        <div class="loader" id="loader"></div>
+    <h1>Contenu Externe dans un Cadre Défilant</h1>
+    <p>Le contenu ci-dessous est chargé depuis un autre site web (via `<iframe>`).</p>
 
-        <div id="result-area">
-            <h2>Résultat :</h2>
-            <p id="message"></p>
-            <img id="screenshot-image" style="display: none;" alt="Capture d'écran du site web">
-            <a id="download-link" style="display: none; margin-top: 10px;" download="capture_site.png">Télécharger l'Image</a>
-        </div>
-
-        <div class="info">
-            ℹ️ **Note importante :** Ce site utilise une API externe gratuite pour générer les captures. La fonctionnalité peut être limitée en cas d'abus ou de changements de l'API.
-        </div>
+    <div class="iframe-container">
+        <iframe id="page-externe"
+                src="https://fr.wikipedia.org/wiki/Wikipédia:Accueil_principal"
+                title="Page externe affichée dans un cadre">
+            Votre navigateur ne supporte pas les iframes.
+        </iframe>
     </div>
 
-    <script>
-        function generateScreenshot() {
-            const urlInput = document.getElementById('url-input').value.trim();
-            const resultArea = document.getElementById('result-area');
-            const message = document.getElementById('message');
-            const imageElement = document.getElementById('screenshot-image');
-            const downloadLink = document.getElementById('download-link');
-            const loader = document.getElementById('loader');
-
-            message.textContent = '';
-            imageElement.style.display = 'none';
-            imageElement.src = '';
-            downloadLink.style.display = 'none';
-            loader.style.display = 'block';
-
-            if (!urlInput) {
-                message.textContent = 'Veuillez entrer une URL valide.';
-                loader.style.display = 'none';
-                return;
-            }
-
-            // Assure que l'URL commence par http:// ou https:// pour l'API
-            let formattedUrl = urlInput;
-            if (!/^https?:\/\//i.test(formattedUrl)) {
-                formattedUrl = 'https://' + formattedUrl;
-            }
-
-            // --- Configuration de l'API Site-Shot (API sans clé, simple pour GitHub Pages) ---
-            // Le format rectangulaire est géré par les paramètres width/height et l'absence de full_size
-            const apiUrl = 'https://api.site-shot.com/?';
-            const params = new URLSearchParams({
-                url: formattedUrl,
-                width: 1280,   // Largeur de la fenêtre du navigateur
-                height: 720,   // Hauteur (forme rectangulaire)
-                format: 'png', // Format de l'image
-                quality: 80,   // Qualité JPEG/PNG
-                // Note : Pas de full_size pour obtenir une capture rectangulaire de la zone visible
-            });
-
-            const screenshotUrl = apiUrl + params.toString();
-
-            // L'API renvoie directement l'image, on définit l'URL de l'image
-            imageElement.onload = () => {
-                loader.style.display = 'none';
-                imageElement.style.display = 'block';
-                downloadLink.href = imageElement.src;
-                downloadLink.style.display = 'inline-block';
-                message.textContent = 'Capture générée avec succès.';
-            };
-
-            imageElement.onerror = () => {
-                loader.style.display = 'none';
-                message.textContent = 'Erreur lors de la génération de la capture. Vérifiez l\'URL.';
-            };
-            
-            // Pour déclencher la requête, on change la source de l'image
-            imageElement.src = screenshotUrl;
-            message.textContent = 'Génération en cours... Veuillez patienter quelques instants.';
-        }
-    </script>
+    <p>Vous pouvez interagir et faire défiler ce contenu sans quitter la page principale.</p>
 
 </body>
 </html>
