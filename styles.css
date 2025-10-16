@@ -1,0 +1,83 @@
+body {
+    /* Utilise la couleur d'arrière-plan du thème Telegram */
+    background-color: var(--tg-theme-bg-color, #ffffff); 
+    color: var(--tg-theme-text-color, #000000);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+    margin: 0;
+}
+
+.game-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 12px;
+    /* Utilise la couleur du second arrière-plan du thème Telegram */
+    background-color: var(--tg-theme-secondary-bg-color, #f0f0f0);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: var(--tg-theme-link-color, #007bff);
+    margin-bottom: 10px;
+}
+
+#pins {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 8px;
+    margin: 20px 0;
+    height: 100px;
+}
+
+.pin {
+    width: 20px;
+    height: 60px;
+    background-color: #ffffff;
+    border: 1px solid #333;
+    border-radius: 50% 50% 10% 10% / 10% 10% 50% 50%;
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+.fallen {
+    opacity: 0;
+    transform: translateY(30px) rotate(45deg);
+}
+
+#roll-button {
+    /* Utilise la couleur des boutons Telegram */
+    background-color: var(--tg-theme-button-color, #50a3ff);
+    color: var(--tg-theme-button-text-color, #ffffff);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s;
+}
+
+#roll-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#roll-button:active:not(:disabled) {
+    background-color: var(--tg-theme-link-color, #007bff);
+}
+
+#message {
+    margin-top: 15px;
+    font-size: 1.1em;
+    font-weight: bold;
+    min-height: 20px;
+}
