@@ -2,49 +2,24 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Affichage d'un Lien dans un Cadre Défilant</title>
-    <style>
-        /* Style pour centrer et donner une taille au conteneur */
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-        }
-
-        /* Style pour l'iframe (le rectangle défilant) */
-        .iframe-container {
-            /* Définit une taille visible pour l'iframe */
-            width: 800px;
-            height: 500px;
-            margin: 20px auto; /* Centre le conteneur */
-            border: 2px solid #007bff; /* Ajoute une bordure pour simuler le rectangle/canvas */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        /* L'iframe elle-même */
-        #page-externe {
-            width: 100%;
-            height: 100%;
-            border: none; /* Enlève la bordure par défaut de l'iframe */
-            /* Par défaut, les iframes sont défilables si le contenu dépasse leur taille */
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Jeu de Boule Telegram</title>
+    
+    <link rel="stylesheet" href="styles.css">
+    
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
 
-    <h1>Contenu Externe dans un Cadre Défilant</h1>
-    <p>Le contenu ci-dessous est chargé depuis un autre site web (via `<iframe>`).</p>
-
-    <div class="iframe-container">
-        <iframe id="page-externe"
-                src="https://fr.wikipedia.org/wiki/Wikipédia:Accueil_principal"
-                title="Page externe affichée dans un cadre">
-            Votre navigateur ne supporte pas les iframes.
-        </iframe>
+    <div class="game-container">
+        <h1>Jeu de Quilles (Bowling)</h1>
+        <div id="score">Score actuel : 0</div>
+        <div id="pins">
+            </div>
+        <button id="roll-button">Lancer la Boule (0/2)</button>
+        <div id="message">Cliquez sur Lancer pour commencer.</div>
     </div>
 
-    <p>Vous pouvez interagir et faire défiler ce contenu sans quitter la page principale.</p>
-
+    <script src="script.js"></script>
 </body>
 </html>
